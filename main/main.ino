@@ -1,12 +1,4 @@
-//https://sandervandevelde.wordpress.com/2019/05/07/connection-a-cheap-esp8266-to-azure-iot-central/
-//http://blogs.recneps.org/post/Connecting-the-ESP-8266-to-Azure-IoT-Hub-using-MQTT-and-MicroPython
-
-//wifi: https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html
-//https://iotdesignpro.com/projects/how-to-connect-esp8266-with-mqtt
 #include <ESP8266WiFi.h>
-
-// using wemos d1 mini esp8266 clone
-//https://diyi0t.com/how-to-reduce-the-esp8266-power-consumption/
 
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
@@ -31,15 +23,11 @@
 
 #define dhtDataPin D1
 #define DHTTYPE DHT11
-// https://randomnerdtutorials.com/esp8266-dht11dht22-temperature-and-humidity-web-server-with-arduino-ide
 
 DHT dht(dhtDataPin, DHTTYPE);
 
 float t = 0.0;
 float h = 0.0;
-
-//https://itsmerajasekar.medium.com/getting-started-with-iot-using-esp8266-node-mcu-and-azure-iot-hub-37a3ca03dd56
-// ssl example: https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/examples/BearSSL_ServerClientCert/BearSSL_ServerClientCert.ino
 
 WiFiClientSecure net = WiFiClientSecure();
 MQTTClient client = MQTTClient(512);
@@ -80,14 +68,6 @@ void setup() {
 
   Serial.print("\nconnecting AWS IOT...");
 
-  //https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/bearssl-client-secure-class.html
-  // Important! NTP required prior to doing SSL handshake!
-  // https://raphberube.com/making-the-esp-8266-work-with-aws-io-t
-  // https://gist.github.com/raph84/ff1fc1896c58b7f50125bda23dee17ae
-
-// TODO: Read... 
-//https://medium.com/accenture-the-dock/esp8266-aws-iot-core-guide-c640f2622a51
-//https://github.com/esp8266/Arduino/issues/5347
   net.setBufferSizes(512, 512);
   
   BearSSL::X509List caCert(AWS_CERT_CA);
@@ -176,6 +156,5 @@ void loop() {
 
   client.disconnect();
   Serial.println("Deep sleeping");
-  // woah, saved me: https://forum.arduino.cc/t/ide-creates-an-error-while-trying-to-upload-a-sketch-to-esp8266-deepsleep/589213/4
   ESP.deepSleep(30 * 60 * 1e6);
 }
